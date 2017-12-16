@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title id="title">WebRTCTube</title>
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="./js/adapter-latest.js"></script>
+<!--
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/adapterjs/0.15.0/adapter.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/socket.io-file-client@2/socket.io-file-client.min.js"></script>
+-->
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+<link rel="stylesheet" href="css/styles.css">
+<script type="text/javascript" src="js/skel.min.js"></script>
+<script type="text/javascript" src="js/util.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/janus.js"></script>
+
+<script type="text/javascript" src="change_page.js"></script>
+<script type="text/javascript" src="janus_connector.js"></script>
+<script type="text/javascript" src="common.js"></script>
+
+<script type="text/javascript" src="home.js"></script>
+<script type="text/javascript" src="impostazioni.js"></script>
+
+</head>
+<body>
+	<div id="wrapper">
+		<header id="header">
+			<h1><a id="welcome"></a></h1>
+			<nav class="links">
+				<ul>
+					<li><a href="#home" onclick="loadHome();">Home</a></li>
+					<li><a href="#bacheca" onclick="loadBacheca();">Bacheca</a></li>
+					<li><a href="#chat" onclick="loadChat();">Chat</a></li>
+					<li>
+						<br/>
+						<a>Richieste</a>
+						<div id="hormenu">
+							<a id="request_counter">0</a>
+							<ul id="request_container"></ul>
+						</div>
+					</li>
+				</ul>
+			</nav>
+			<nav class="main">
+				<ul id="query_container">
+					<div>
+						<div id='lkfor' class="search"/>
+						<input id="query" type="text" name="query" list="result" placeholder="Search"/>
+						<datalist id="result"/>
+					</div>
+					<li class="menu">
+						<a class="fa-bars" href="#menu">Menu</a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<section id="menu">
+			<section>
+				<ul class="links">
+					<li><a href="#home" onclick="loadHome();">Home</a></li>
+					<li><a href="#bacheca" onclick="loadBacheca();">Bacheca</a></li>
+					<li><a href="#chat" onclick="loadChat();">Chat</a></li>
+					<li><a href="#collegamenti" onclick="loadCollegamenti();">Collegamenti</a></li>
+					<li><a href="#impostazioni" onclick="loadImpostazioni();">Impostazioni</a></li>
+				</ul>
+			</section>
+			<section>
+				<ul class="actions vertical">
+					<li><button id="logout" class="button small fit">Log Out</button></li>
+				</ul>
+			</section>
+		</section>
+
+		<div id="main">
+
+			<div id="home">
+				<div class="outer-container">
+					<div class="inner-container">
+						<video id="gum-local" autoplay playsinline muted></video>
+					</div><br/>
+					<button id="reg-pause">Registra</button>
+					<button id="save">Salva</button>
+					<button id="abort">Annulla</button> <br/>
+					Nome file: <input id="filename" type="text" value="" onClick="this.setSelectionRange(0, this.value.length)"></input>
+				</div>
+			</div>
+
+			<div id="bacheca" hidden>
+				<h1>Video<button id="refresh_videos" class="button small">Refresh</button></h1>
+				<div id="videos">
+					<article class="posts">
+						<header class="table-wrapper"/>
+					</article>
+				</div>
+			</div>
+
+			<div id="chat" hidden>
+				<div width="100%">
+					<div class="outer-container" width="80%" style="float: left;">
+						<div class="inner-container">
+							<div class="video-overlay">
+								<video id="my_video" class="overlay" autoplay playsinline muted visibility="hidden"></video>
+							</div>
+							<video id="peer_video" autoplay playsinline controls visibility="hidden"></video>
+						</div>
+					</div>
+					<!-- <div id="data_chat" style="float: right;">
+						<div>
+							<input id="msg_chat" type="text" placeholder="Message" disabled/>
+							<button class="button small" id="send_msg" disabled>Invia</button>
+						</div>
+					</div> -->
+				</div>
+				<section id="contacts" style="clear: both;">
+					<h1>Collegamenti<button id="refresh_contacts_chat" class="button small">Refresh</button></h1>
+					<div>
+						<div class="search">
+							<input id="query_chat" type="text" placeholder="Search"/>
+						</div>
+						<button class="button small" id="call">Chiama</button>
+						<button class="button small" id="hangup" disabled>Aggancia</button>
+					</div>
+					<div id="contacts_container_chat"></div>
+				</section>
+			</div>
+
+			<div id="collegamenti" hidden>
+				<h1>Lista Collegamenti<button id="refresh_contacts_collegamenti" class="button small">Refresh</button></h1>
+				<h3>Cliccare per eliminare il collegamento</h3>
+				<div>
+					<div class="search">
+						<input id="query_delete" type="text" placeholder="Search"/>
+					</div>
+				</div>
+				<div>
+					<div id="contacts_container_collegamenti"></div>
+				</div>
+			</div>
+
+			<div id="impostazioni" hidden>
+				<div>
+					<h1>Cambia email</h1>
+					<input type="email" id="new_email" placeholder="Nuova email" pattern=".+@.+\..+" maxlength="45" />
+					<input type="email" id="renew_email" placeholder="Ripeti nuova email" />
+					<dialog id="pinDialog">
+						<section>
+							<h1>Inserire il PIN</h1>
+							<input type="password" id="pin"/>
+						</section>
+						<br/>
+						<menu>
+							<button id="annulla_pin" type="button">Annulla</button>
+							<button id="sottometti_pin" type="button" disabled>Conferma</button>
+						</menu>
+					</dialog>
+					<input type="password" id="pwd_email" placeholder="Password" />
+					<br/>
+					<button type="button" id="chng_email">Sottometti</button>
+				</div>
+				<div>
+					<h1>Cambia password</h1>
+					<input type="password" id="old_pwd" placeholder="Vecchia password" />
+					<input type="password" id="new_pwd" placeholder="Nuova password" maxlength="45" />
+					<input type="password" id="renew_pwd" placeholder="Ripeti nuova password" />
+					<br/>
+					<button type="button" id="chng_pwd">Sottometti</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

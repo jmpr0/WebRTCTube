@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebRTCTube</title>
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<script type="text/javascript" src="./js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="./js/adapter-latest.js"></script>
+<!--
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/adapterjs/0.15.0/adapter.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/socket.io-file-client@2/socket.io-file-client.min.js"></script>
+-->
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
+
+	<script type="text/javascript" src="./index.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<header id="header">
+			<h1><a href="./index.html">WebRTC Tube</a></h1>
+			<nav class="main">
+				<ul>
+					<li><input type="text" id="log_user" placeholder="Username"/></li>
+					<li><input type="password" id="log_pwd" placeholder="Password"/></li>
+					<li><button type="button" id="login">Login</button></li>
+				</ul>
+			</nav>
+		</header>
+		<div class="mini-posts">
+			<div>
+				<h1>Signup</h1>
+				<input type="text" id="sig_user" placeholder="Username" maxlength="45" />
+				<input type="email" id="sig_email" placeholder="Email" pattern=".+@.+\..+" maxlength="45" />
+				<input type="email" id="sig_reemail" placeholder="Ripeti email" />
+				<br/>
+				<button type="button" id="signup" disabled>Signup</button>
+			</div>
+			<div>
+				<h1>Recupera Password</h1>
+				<input type="email" id="rec_email" placeholder="Email" pattern=".+@.+\..+" maxlength="45" />
+				<br/>
+				<button type="button" id="recover" disabled>Sottometti</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
